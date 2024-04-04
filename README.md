@@ -4,15 +4,15 @@ This is a sample demonstration of how to run parallel code scanning a monorepo u
 
 There are many considerations and tactics in [Monorepo Book](https://monorepo-book.github.io/) on how to gain efficiency from monorepo. This demonstration primarily focuses on CodeQL code scanning.
 
-### :grey_question: Problem to solve
+## :grey_question: Problem to solve
 
 When you have a large monorepo with multiple projects, it can consume unnecessary compute resources to scan projects with no new changes. This may lead to longer scanning duration, increase feedback lead time, and disrupt the developer's flow - which will further discourage developers to commit frequently and increase commit sizes.
 
-### :bulb: Proposed solution
+### :bulb: Solution concept
 
-Scan only the projects that have new commits.
+Scan only the project folders that have new commits.
 
-### :hammer_and_wrench: Implementation
+### :hammer_and_wrench: POC implementation
 
 At a high level,
 
