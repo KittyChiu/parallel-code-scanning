@@ -1,0 +1,40 @@
+name: 'dotNet Build'
+on:
+  pull_request:
+    paths:
+      - 'tailwind-website/**'
+    branches: [main]
+
+  push:
+    paths:
+      - 'tailwind-website/**'
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 5.x
+          cache: false
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./tailwind-website
+
+      - name: Build
+        run: dotnet build --no-restore
+        working-directory: ./tailwind-website

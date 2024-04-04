@@ -2,14 +2,14 @@
 #
 # This script prints a JSON representation of an include matrix - based on the output of git diff - that will create a job for each top level folder/language combination detected in the repository.
 #
-# {"include": [{"target-dir": ".github", "languages": "javascript"}, {"target-dir": "project with spaces", "languages": "javascript"}, {"target-dir": "project-1", "languages": "javascript"}, {"target-dir": "python-project", "languages": "python"}]}
+# {"include": [{"target-dir": "pygoat", "language": "javascript-typescript", "build-mode": "none"}, {"target-dir": "javagoat", "language": "javascript-typescript", "build-mode": "none"}, {"target-dir": "pygoat", "language": "python", "build-mode": "none"}, {"target-dir": "javagoat-cousin", "language": "javascript-typescript", "build-mode": "none"}, {"target-dir": "javagoat-cousin", "language": "java-kotlin", "build-mode": "none"}, {"target-dir": "javagoat", "language": "java-kotlin", "build-mode": "none"}, {"target-dir": "tailwind-website", "language": "csharp", "build-mode": "autobuild"}, {"target-dir": "tailwind-website", "language": "javascript-typescript", "build-mode": "none"}]}
 #
 
 from genericpath import isdir
 import json
 import os
 
-javascript = [".js", ".jsx", ".mjs", ".es", ".es6", ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".json", ".yaml", ".yml", ".raml", ".xml"]
+javascript = [".js", ".jsx", ".mjs", ".cjs"]
 typescript = [".ts", ".tsx", ".mts", ".cts"]
 c_and_cplus = [".cpp", ".c++", ".cxx", ".hpp", ".hh", ".h++", ".hxx", ".c," ".cc", ".h"]
 csharp = [".sln", ".csproj", ".cs", ".cshtml", ".xaml"]
@@ -39,20 +39,20 @@ def find_in_list(list, string):
 for line in lines:
     path = line.split('/')[0]
     if find_in_list(javascript, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "javascript"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "javascript-typescript", "build-mode": "none"}).items()))
     if find_in_list(typescript, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "javascript"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "javascript-typescript", "build-mode": "none"}).items()))
     if find_in_list(c_and_cplus, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "cpp"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "c-cpp", "build-mode": "autobuild"}).items()))
     if find_in_list(csharp, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "csharp"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "csharp", "build-mode": "autobuild"}).items()))
     if find_in_list(golang, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "go"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "go", "build-mode": "none"}).items()))
     if find_in_list(python_lang, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "python"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "python", "build-mode": "none"}).items()))
     if find_in_list(java, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "java"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "java-kotlin", "build-mode": "none"}).items()))
     if find_in_list(ruby, line) and (os.path.isdir(path)):
-        outlines["include"].add(tuple(dict({"target-dir": path, "languages": "ruby"}).items()))
+        outlines["include"].add(tuple(dict({"target-dir": path, "language": "ruby", "build-mode": "none"}).items()))
     
 print(json.dumps(outlines, default=serialize_sets))
